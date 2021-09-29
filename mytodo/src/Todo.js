@@ -7,7 +7,7 @@
 
 import React, {useState} from 'react'
 
-export default function Todo({title, description, dateCreated, user_complete, user_dateCompleted}) {
+export default function Todo({title, description="", dateCreated, user_complete, user_dateCompleted}) {
     const [complete, setComplete] = useState(user_complete)
     const [dateCompleted, setDateCompleted] = useState(user_dateCompleted)
 
@@ -27,6 +27,9 @@ export default function Todo({title, description, dateCreated, user_complete, us
         <form onSubmit={e => e.preventDefault()}>
             <label htmlFor="todo-title">title: </label>
             <label name="todo-title" id="todo-title">{title}</label>
+            <br/>
+            <label htmlFor="todo-desc">title: </label>
+            <label name="todo-desc" id="todo-desc">{description}</label>
             <br/>
             <label htmlFor="todo-checkbox">finished: </label>
             <input type="checkbox" name="todo-checkbox" id="todo-checkbox" checked={complete} onChange={handleComplete}/>

@@ -64,6 +64,22 @@ function App() {
             <hr/>
             <Logout user="bobo"/>
             <hr/>
+            <form onSubmit={e => e.preventDefault()}>
+                Add Todo:
+                <br/>
+
+                <label htmlFor="todo-title">title: </label>
+                <input type="text" id="todo-title" name="todo-title" />
+                <br/>
+
+                <label htmlFor="todo-desc">description: </label>
+                <textarea id="todo-desc" name="todo-desc" />
+                <br/>
+
+
+                <button type="submit" name="create">create</button>
+            </form>
+            <hr/>
             <TodoList todos={todos} />
         </div>
     )
