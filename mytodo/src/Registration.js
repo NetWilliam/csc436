@@ -5,19 +5,28 @@
  * Distributed under terms of the MIT license.
  */
 
-import React from 'react'
+import React, {useState} from 'react'
 
-export default function Registration() {
+export default function Registration({dispatch}) {
+    const [username, setUsername] = useState('')
+    const [pswd, setPswd] = useState('')
+    const [repeatPwsd, setRepeatPswd] = useState('')
     return (
-        <form onSubmit={e => e.preventDefault()}>
-            fill in the form to regist.
-            <label htmlFor="login-username"> Username: </label>
-            <input type="text" name="login-username" id="login-username"/>
-            <label htmlFor="login-password">Password:</label>
-            <input type="password" name="login-password" id="login-password"/>
-            <label htmlFor="rpt-login-password">Repeat Password:</label>
-            <input type="password" name="rpt-login-password" id="rpt-login-password"/>
-            <intput type="submit" value="Login" />
-        </form>
+        <div>
+            <form onSubmit={e => {e.preventDefault(); dispatch({type: "ACT_REGIST", username: username})}}>
+                fill in the form to regist.
+                <br/>
+                <label htmlFor="reg-username"> Username: </label>
+                <input type="text" name="reg-username" id="reg-username" onChange={e => setUsername(e.target.value)}/>
+                <br/>
+                <label htmlFor="reg-password">Password:</label>
+                <input type="password" name="reg-password" id="reg-password" onChange={e => setPswd(e.target.value)}/>
+                <br/>
+                <label htmlFor="rpt-reg-password">Repeat Password:</label>
+                <input type="password" name="rpt-reg-password" id="rpt-reg-password" onChange={e => setRepeatPswd(e.target.value)}/>
+                <br/>
+                <input type="submit" value="Regist" />
+            </form>
+        </div>
     )
 }

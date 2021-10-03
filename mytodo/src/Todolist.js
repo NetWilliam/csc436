@@ -8,10 +8,10 @@
 import React from 'react'
 import Todo from './Todo'
 
-export default function Todolist({todos = []}) {
+export default function Todolist({todos = [], dispatch}) {
     return (
         <div>
-            {todos.map((td, i) => <div><Todo {...td} key={'todo-' + i}/><br/></div>)}
+            {todos.map((td, i) => <div key={'todo-' + i}><Todo {...td} dispatch={dispatch}/><br/></div>)}
         </div>
     )
 }

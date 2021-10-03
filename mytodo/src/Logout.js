@@ -6,9 +6,9 @@
  */
 import React from 'react'
 
-export default function Logout({user="bobo"}) {
+export default function Logout({user="bobo", dispatch}) {
     return (
-        <form onSubmit={e => e.preventDefault()}>
+        <form onSubmit={e => {e.preventDefault(); dispatch({type: "ACT_LOGOUT"})}}>
             Logged in as: <b>{user}</b><br/>
             <input type="submit" value="Logout"/>
         </form>
