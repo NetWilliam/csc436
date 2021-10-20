@@ -40,6 +40,9 @@ function todoReducer(state, action) {
             return state.map(td => td.uuid !== action.uuid ? td : {...td, complete: !td.complete, dateCompleted: !td.complete ? dateTime : ""})
         case 'ACT_DELETE_TODO':
             return state.filter(td => td.uuid !== action.uuid)
+        case 'ACT_FETCH_TODO':
+            console.log("action: ACT_FETCH, todos: ", JSON.stringify(action.todos))
+            return action.todos
         default:
             return state;
     }

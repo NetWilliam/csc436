@@ -5,12 +5,15 @@
  * Distributed under terms of the MIT license.
  */
 
-import React, {useState} from 'react'
+import React, {useState, useContext} from 'react'
+import {StateContext} from './Contexts'
 
-export default function Login({dispatch}) {
+export default function Login() {
+    const {state, dispatch} = useContext(StateContext)
     const [username, setUsername] = useState('')
     const [pswd, setPswd] = useState('')
     return (
+        !state.user &&
         <form onSubmit={e => {e.preventDefault(); dispatch({type: 'ACT_LOGIN', username: username, password: pswd})}}>
             <label htmlFor="login-username"> Username: </label>
             <input type="text" name="login-username" id="login-username" onChange={e => setUsername(e.target.value)}/>

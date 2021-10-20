@@ -5,12 +5,17 @@
  * Distributed under terms of the MIT license.
  */
 
-import React, {useState} from 'react'
+import React, {useState, useContext} from 'react'
+import {StateContext} from './Contexts'
 
-export default function CreateTodo({user, dispatch}) {
+export default function CreateTodo() {
+    const {state, dispatch} = useContext(StateContext)
+    const {user} = state
+
     const [ title, setTitle ] = useState('')
     const [ description, setDescription ] = useState('')
     return (
+        state.user &&
         <form onSubmit={e => {e.preventDefault(); dispatch({type: "ACT_CREATE_TODO", title: title, description: description})}}>
             Add Todo:
             <br/>

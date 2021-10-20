@@ -5,13 +5,16 @@
  * Distributed under terms of the MIT license.
  */
 
-import React, {useState} from 'react'
+import React, {useState, useContext} from 'react'
+import {StateContext} from './Contexts'
 
-export default function Registration({dispatch}) {
+export default function Registration() {
+    const {state, dispatch} = useContext(StateContext)
     const [username, setUsername] = useState('')
     const [pswd, setPswd] = useState('')
     const [repeatPwsd, setRepeatPswd] = useState('')
     return (
+        !state.user &&
         <div>
             <form onSubmit={e => {e.preventDefault(); dispatch({type: "ACT_REGIST", username: username})}}>
                 fill in the form to regist.
