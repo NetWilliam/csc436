@@ -12,13 +12,9 @@ import {StateContext} from './Contexts'
 export default function Todolist() {
     const {state, dispatch} = useContext(StateContext)
     const {todo: todos} = state
-    if (state.user) {
-        return (
-            <div>
-                {todos.map((td, i) => <div key={'todo-' + i}><Todo {...td} dispatch={dispatch}/><br/></div>)}
-            </div>
-        )
-    } else {
-        return <div/>
-    }
+    return (
+        <div>
+            {todos && todos.map((td, i) => <div key={'todo-' + i}><Todo {...td} dispatch={dispatch}/><br/></div>)}
+        </div>
+    )
 }

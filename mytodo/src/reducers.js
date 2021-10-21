@@ -21,23 +21,21 @@ function userReducer(state, action) {
 }
 
 function todoReducer(state, action) {
-    var today = new Date();
-    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-    var dateTime = date+' '+time;
     switch(action.type) {
         case 'ACT_CREATE_TODO':
             const newTodo = {
-                uuid: uuidv4(),
+                uuid: action.uuid,
                 title: action.title,
                 description: action.description ? action.description : "",
-                dateCreated: dateTime,
-                complete: false,
-                dateCompleted: ""
+                dateCreated: action.dateCreated,
+                complete: action.complete,
+                dateCompleted: action.dateCompleted
             }
             return [newTodo, ...state];
         case 'ACT_TOGGLE_TODO':
-            return state.map(td => td.uuid !== action.uuid ? td : {...td, complete: !td.complete, dateCompleted: !td.complete ? dateTime : ""})
+            console.log("state state of: " + JSON.stringify(action.uuid))
+            //return state.map(td => td.uuid !== action.uuid ? td : {...action.todo})
+            return state.map(td => td.uuid !== action.uuid ? td : {...td, complete: !td.complete, dateCompleted: action.dateCompleted})
         case 'ACT_DELETE_TODO':
             return state.filter(td => td.uuid !== action.uuid)
         case 'ACT_FETCH_TODO':
