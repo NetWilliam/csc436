@@ -5,19 +5,23 @@
  * Distributed under terms of the MIT license.
  */
 
-import React, {useContext} from 'react'
-import {StateContext} from './Contexts'
-
+import React, { useContext } from "react";
+import { StateContext } from "./Contexts";
 
 export default function Logout() {
-    const {state, dispatch} = useContext(StateContext)
-    const {user} = state
+    const { state, dispatch } = useContext(StateContext);
+    const { user } = state;
 
     return (
-        state.user &&
-        <form onSubmit={e => {e.preventDefault(); dispatch({type: "ACT_LOGOUT"})}}>
-            Logged in as: <b>{user}</b><br/>
-            <input type="submit" value="Logout"/>
+        <form
+            onSubmit={(e) => {
+                e.preventDefault();
+                dispatch({ type: "ACT_LOGOUT" });
+            }}
+        >
+            Logged in as: <b>{user.username}</b>
+            <br />
+            <input type="submit" value="Logout" />
         </form>
-    )
+    );
 }

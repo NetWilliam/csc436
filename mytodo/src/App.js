@@ -1,51 +1,49 @@
-import logo from './logo.svg';
-import './App.css';
-//import Todo from './Todo'
-import TodoList from './Todolist'
-import CreateTodo from './CreateTodo'
-import Login from './Login'
-import Logout from './Logout'
-import Registration from './Registration'
-import appReducer from './reducers'
-import { useState, useReducer, useEffect } from 'react'
-import { useResource } from 'react-request-hook'
-
-
-import {StateContext} from './Contexts'
+import logo from "./logo.svg";
+import "./App.css";
+import Todolist from "./Todolist";
+import CreateTodo from "./CreateTodo";
+import Login from "./Login";
+import Logout from "./Logout";
+import Registration from "./Registration";
+import appReducer from "./reducers";
+import { useState, useReducer, useEffect } from "react";
+import { useResource } from "react-request-hook";
+import { StateContext } from "./Contexts";
+import { Router, View } from "react-navi";
+import { mount, route } from "navi";
+import { Container } from "react-bootstrap";
+import TodoPage from "./pages/TodoPage";
+import HeaderBar from "./pages/HeaderBar";
+import HomePage from "./pages/HomePage";
 
 function App() {
-    //const [state, dispatch] = useReducer(appReducer, {user: '', todo: todos})
-    const [state, dispatch] = useReducer(appReducer, {user: '', todo: []})
+    const [state, dispatch] = useReducer(appReducer, { user: {}, todo: [] });
 
-    const [todos, getTodos] = useResource(() => ({
-        url: '/todos',
-        method: 'get',
-    }))
-    useEffect(getTodos, [])
-    useEffect(() => {
-        //console.log('todos: ' + JSON.stringify(todos))
-        if (todos && todos.data) {
-            dispatch({type: "ACT_FETCH_TODO", todos: todos.data});
-        }
-    }, [todos])
+    const routes = mount({
+        "/": route({ view: <HomePage /> }),
+        "/todo/create": route({ view: <CreateTodo /> }),
+        "/todo/:id": route((req) => {
+            return { view: <TodoPage id={req.params.id} /> };
+        }),
+        "/users": route(() => {}),
+        "/users/:userId": route(() => {}),
+    });
 
     return (
-        <StateContext.Provider value={{state: state, dispatch: dispatch}}>
-            <div className="Root">
-                {/*
-                {!state.user && <><Login dispatch={dispatch}/><hr/></>}
-                {!state.user && <><Registration dispatch={dispatch}/><hr/></>}
-                {state.user && <><Logout user={state.user} dispatch={dispatch}/><hr/></>}
-                {state.user && <><CreateTodo user={state.user} dispatch={dispatch}/><hr/></>}
-                {state.todo && <><TodoList todos={state.todo} dispatch={dispatch}/></>}
-                */}
-                <Login/>
-                <Registration/>
-                <Logout/>
-                <CreateTodo/>
-                <TodoList/>
-            </div>
-        </StateContext.Provider>
-    )
+        <div>
+            <StateContext.Provider value={{ state: state, dispatch: dispatch }}>
+                <div className="Root">
+                    <Router routes={routes}>
+                        <Container>
+                            <HeaderBar />
+                            <hr />
+                            <View />
+                        </Container>
+                    </Router>
+                </div>
+            </StateContext.Provider>
+        </div>
+    );
 }
+
 export default App;

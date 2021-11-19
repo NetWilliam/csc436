@@ -5,16 +5,26 @@
  * Distributed under terms of the MIT license.
  */
 
-import React, {useContext} from 'react'
-import Todo from './Todo'
-import {StateContext} from './Contexts'
+import React, { useContext } from "react";
+import Todo from "./Todo";
+import { StateContext } from "./Contexts";
 
 export default function Todolist() {
-    const {state, dispatch} = useContext(StateContext)
-    const {todo: todos} = state
+    const { state, dispatch } = useContext(StateContext);
+    const { todo } = state;
     return (
         <div>
-            {todos && todos.map((td, i) => <div key={'todo-' + i}><Todo {...td} dispatch={dispatch}/><br/></div>)}
+            {console.log("todo: " + JSON.stringify(todo))}
+            {todo.length ? (
+                todo.map((td, i) => (
+                    <div key={"todo-" + i}>
+                        <Todo {...td} dispatch={dispatch} />
+                        <br />
+                    </div>
+                ))
+            ) : (
+                <></>
+            )}
         </div>
-    )
+    );
 }

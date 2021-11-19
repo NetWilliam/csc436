@@ -5,42 +5,47 @@
  * Distributed under terms of the MIT license.
  */
 
-import {v4 as uuidv4} from 'uuid'
+import { v4 as uuidv4 } from "uuid";
 
 function userReducer(state, action) {
-    switch(action.type) {
-        case 'ACT_LOGIN':
-            return action.username
-        case 'ACT_LOGOUT':
-            return "";
-        case 'ACT_REGIST':
-            return action.username
+    switch (action.type) {
+        case "ACT_LOGIN":
+        case "ACT_REGIST":
+            return {
+                username: action.username,
+                access_token: action.access_token,
+            };
+        case "ACT_LOGOUT":
+            return { username: "", access_token: "" };
         default:
             return state;
     }
 }
 
 function todoReducer(state, action) {
-    switch(action.type) {
-        case 'ACT_CREATE_TODO':
-            const newTodo = {
-                uuid: action.uuid,
-                title: action.title,
-                description: action.description ? action.description : "",
-                dateCreated: action.dateCreated,
-                complete: action.complete,
-                dateCompleted: action.dateCompleted
-            }
+    switch (action.type) {
+        case "ACT_CREATE_TODO":
+            const newTodo = action.todo;
             return [newTodo, ...state];
-        case 'ACT_TOGGLE_TODO':
-            console.log("state state of: " + JSON.stringify(action.uuid))
-            //return state.map(td => td.uuid !== action.uuid ? td : {...action.todo})
-            return state.map(td => td.uuid !== action.uuid ? td : {...td, complete: !td.complete, dateCompleted: action.dateCompleted})
-        case 'ACT_DELETE_TODO':
-            return state.filter(td => td.uuid !== action.uuid)
-        case 'ACT_FETCH_TODO':
-            console.log("action: ACT_FETCH, todos: ", JSON.stringify(action.todos))
-            return action.todos
+        case "ACT_TOGGLE_TODO":
+            console.log("state state of: " + JSON.stringify(action._id));
+            return state.map((td) =>
+                td._id !== action._id
+                    ? td
+                    : {
+                          ...td,
+                          complete: !td.complete,
+                          dateCompleted: action.dateCompleted,
+                      }
+            );
+        case "ACT_DELETE_TODO":
+            return state.filter((td) => td._id !== action._id);
+        case "ACT_FETCH_TODO":
+            console.log(
+                "action: ACT_FETCH, todos: ",
+                JSON.stringify(action.todo)
+            );
+            return action.todo;
         default:
             return state;
     }
@@ -49,6 +54,6 @@ function todoReducer(state, action) {
 export default function appReducer(state, action) {
     return {
         user: userReducer(state.user, action),
-        todo: todoReducer(state.todo, action)
-    }
+        todo: todoReducer(state.todo, action),
+    };
 }

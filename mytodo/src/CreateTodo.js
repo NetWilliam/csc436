@@ -5,52 +5,89 @@
  * Distributed under terms of the MIT license.
  */
 
-import React, {useState, useContext, useEffect} from 'react'
-import {useResource} from 'react-request-hook'
-import {StateContext} from './Contexts'
+import React, { useState, useContext, useEffect } from "react";
+import { useResource } from "react-request-hook";
+import { StateContext } from "./Contexts";
+import { useNavigation } from "react-navi";
 
 export default function CreateTodo() {
-    const {state, dispatch} = useContext(StateContext)
-    const {user} = state
+    const navigation = useNavigation();
 
-    const [ title, setTitle ] = useState('')
-    const [ description, setDescription ] = useState('')
+    const { state, dispatch } = useContext(StateContext);
+    const { user } = state;
 
-    const [todo, createTodo] = useResource(({title, description, dateCreated, complete=false, dateCompleted=null}) => ({
-        url: '/todos',
-        method: 'post',
-        data: {title, description, dateCreated, complete, dateCompleted}
-    }))
+    const [title, setTitle] = useState("");
+    const [description, setDescription] = useState("");
+
+    const [todo, createTodo] = useResource(
+        ({
+            title,
+            description,
+            dateCreated,
+            complete = false,
+            dateCompleted = null,
+        }) => ({
+            url: "/todo",
+            method: "post",
+            headers: { Authorization: `${user.access_token}` },
+            data: { title, description, dateCreated, complete, dateCompleted },
+        })
+    );
     useEffect(() => {
         if (todo && todo.data) {
-            dispatch({type: 'ACT_CREATE_TODO', ...todo.data})
+            dispatch({ type: "ACT_CREATE_TODO", todo: todo.data });
+            console.log("create new todo: " + JSON.stringify(todo.data));
+            navigation.navigate(`/todo/${todo.data._id}`);
         }
-    }, [todo])
+    }, [todo]);
     function handleCreate() {
         var today = new Date();
-        var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-        var dateTime = date+' '+time;
+        var date =
+            today.getFullYear() +
+            "-" +
+            (today.getMonth() + 1) +
+            "-" +
+            today.getDate();
+        var time =
+            today.getHours() +
+            ":" +
+            today.getMinutes() +
+            ":" +
+            today.getSeconds();
+        var dateTime = date + " " + time;
 
-        createTodo({title, description, dateCreated: dateTime})
+        createTodo({ title, description, dateCreated: dateTime });
     }
 
     return (
-        state.user &&
-        <form onSubmit={e => {e.preventDefault(); handleCreate()}}>
-            Add Todo:
-            <br/>
-
-            <label htmlFor="todo-title">title: </label>
-            <input type="text" id="todo-title" name="todo-title" onChange={e => setTitle(e.target.value)}/>
-            <br/>
-
-            <label htmlFor="todo-desc">description: </label>
-            <textarea id="todo-desc" name="todo-desc" onChange={e => setDescription(e.target.value)}/>
-            <br/>
-
-
-            <button type="submit" name="create">create</button>
-        </form>
-    )
+        state.user.username && (
+            <form
+                onSubmit={(e) => {
+                    e.preventDefault();
+                    handleCreate();
+                }}
+            >
+                Add Todo:
+                <br />
+                <label htmlFor="todo-title">title: </label>
+                <input
+                    type="text"
+                    id="todo-title"
+                    name="todo-title"
+                    onChange={(e) => setTitle(e.target.value)}
+                />
+                <br />
+                <label htmlFor="todo-desc">description: </label>
+                <textarea
+                    id="todo-desc"
+                    name="todo-desc"
+                    onChange={(e) => setDescription(e.target.value)}
+                />
+                <br />
+                <button type="submit" name="create">
+                    create
+                </button>
+            </form>
+        )
+    );
 }
