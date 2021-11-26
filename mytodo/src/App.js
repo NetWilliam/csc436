@@ -15,6 +15,8 @@ import { Container } from "react-bootstrap";
 import TodoPage from "./pages/TodoPage";
 import HeaderBar from "./pages/HeaderBar";
 import HomePage from "./pages/HomePage";
+import UserPage from "./pages/UserPage";
+import UserProfilePage from "./pages/UserProfilePage";
 
 function App() {
     const [state, dispatch] = useReducer(appReducer, { user: {}, todo: [] });
@@ -25,8 +27,12 @@ function App() {
         "/todo/:id": route((req) => {
             return { view: <TodoPage id={req.params.id} /> };
         }),
-        "/users": route(() => {}),
-        "/users/:userId": route(() => {}),
+        "/user": route({ view: <UserPage /> }),
+        "/user/:userId": route((req) => {
+            return {
+                view: <UserProfilePage id={req.params.userId} />,
+            };
+        }),
     });
 
     return (

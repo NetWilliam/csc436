@@ -23,6 +23,9 @@ export default function HeaderBar({}) {
                                 <Link href="/todo/create">Create New Todo</Link>
                             </Nav.Link>
                         )}
+                        <Nav.Link>
+                            <Link href="/user">View Users Info</Link>
+                        </Nav.Link>
                     </Nav>
                     <React.Suspense fallback={"Loading..."}>
                         <UserBar />

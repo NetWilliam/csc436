@@ -9,6 +9,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { useResource } from "react-request-hook";
 import { StateContext } from "./Contexts";
 import { useNavigation } from "react-navi";
+import { Form, Button } from "react-bootstrap";
 
 export default function CreateTodo() {
     const navigation = useNavigation();
@@ -58,7 +59,45 @@ export default function CreateTodo() {
 
         createTodo({ title, description, dateCreated: dateTime });
     }
+    return (
+        state.user.username && (
+            <Form
+                onSubmit={(e) => {
+                    e.preventDefault();
+                    handleCreate();
+                }}
+            >
+                Add Todo:
+                <br />
+                <Form.Group
+                    className="mb-3"
+                    controlId="exampleForm.ControlInput1"
+                >
+                    <Form.Label>Title:</Form.Label>
+                    <Form.Control
+                        type="text"
+                        onChange={(e) => setTitle(e.target.value)}
+                    />
+                </Form.Group>
+                <Form.Group
+                    className="mb-3"
+                    controlId="exampleForm.ControlTextarea1"
+                >
+                    <Form.Label>Description</Form.Label>
+                    <Form.Control
+                        as="textarea"
+                        rows={3}
+                        onChange={(e) => setDescription(e.target.value)}
+                    />
+                </Form.Group>
+                <Button variant="primary" type="submit">
+                    Create
+                </Button>
+            </Form>
+        )
+    );
 
+    /*
     return (
         state.user.username && (
             <form
@@ -90,4 +129,5 @@ export default function CreateTodo() {
             </form>
         )
     );
+    */
 }
